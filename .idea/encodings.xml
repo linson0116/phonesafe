@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/widget01.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/widget02.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/widget03.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/widget04.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/widget05.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/widget06.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/widget07.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/widget08.png" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/widget09.png" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
