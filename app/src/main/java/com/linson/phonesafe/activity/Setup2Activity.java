@@ -1,15 +1,14 @@
 package com.linson.phonesafe.activity;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.linson.phonesafe.R;
 import com.linson.phonesafe.utils.SpUtils;
 import com.linson.phonesafe.view.SettingItemView;
 
-public class Setup2Activity extends Activity {
+public class Setup2Activity extends BaseSetupActivity {
 
     private SettingItemView siv_setup2_bindsim;
 
@@ -39,12 +38,24 @@ public class Setup2Activity extends Activity {
         }
     }
 
-    public void nextPage(View view) {
-        Toast.makeText(this, "next", Toast.LENGTH_SHORT).show();
+
+
+    @Override
+    void showPreviousPage() {
+        Intent intent = new Intent(this, Setup1Activity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(R.anim.previous_in_setup,R.anim.previous_out_setup);
     }
 
-    public void previousPage(View view) {
-        Toast.makeText(this, "previous", Toast.LENGTH_SHORT).show();
+    @Override
+    void showNextPage() {
+        Intent intent = new Intent(this, Setup3Activity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(R.anim.next_in_setup,R.anim.next_out_setup);
     }
+
+
 
 }
