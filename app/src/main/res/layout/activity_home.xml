@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_home"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.linson.phonesafe.activity.HomeActivity">
+    <TextView
+        android:id="@+id/tv_title"
+        android:text="标题"
+        style="@style/AppTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_run"
+        android:text="TextView滚动的前提是这个空间必须要获得焦点。"
+        android:textSize="20sp"
+        android:padding="5dp"
+
+        android:marqueeRepeatLimit="marquee_forever"
+        android:focusable="true"
+        android:ellipsize="marquee"
+        android:focusableInTouchMode="true"
+        android:singleLine="true"
+
+        android:layout_below="@id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <GridView
+        android:id="@+id/gv_home"
+        android:numColumns="3"
+        android:verticalSpacing="15dp"
+        android:layout_below="@id/tv_run"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></GridView>
+</RelativeLayout>

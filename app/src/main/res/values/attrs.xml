@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="com.linson.phonesafe.view.SettingItemView">
+        <attr name="desoff" format="string"></attr>
+        <attr name="deson" format="string"></attr>
+        <attr name="destitle" format="string"></attr>
+    </declare-styleable>
+</resources>
