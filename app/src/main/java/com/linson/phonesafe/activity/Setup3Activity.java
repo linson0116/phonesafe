@@ -2,15 +2,19 @@ package com.linson.phonesafe.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.linson.phonesafe.R;
 
+import static android.content.ContentValues.TAG;
+
 public class Setup3Activity extends BaseSetupActivity {
 
     private TextView tv_radius;
+    private TextView tv_tel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,10 +25,11 @@ public class Setup3Activity extends BaseSetupActivity {
     }
 
     private void initUI() {
+        tv_tel = (TextView) findViewById(R.id.tv_tel);
         tv_radius.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Setup3Activity.this, "", Toast.LENGTH_SHORT).show();
+                startActivityForResult(new Intent(getApplicationContext(),ContactsActivity.class),0);
             }
         });
     }
@@ -40,5 +45,11 @@ public class Setup3Activity extends BaseSetupActivity {
     @Override
     void showNextPage() {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        tv_tel.setText(data.getStringExtra("tel"));
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

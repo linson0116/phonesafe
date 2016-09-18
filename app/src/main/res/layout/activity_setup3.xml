@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_setup3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.linson.phonesafe.activity.Setup3Activity">
     <TextView
         android:text="setup3"
@@ -12,26 +13,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
+        android:text="SIM卡变更后\n报警短信会发送到安全号码"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/tv_tel"
+        android:hint="输入号码"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
         android:id="@+id/tv_radius"
-        android:layout_below="@id/tv_title"
         android:gravity="center"
-        android:text="圆角TV"
+        android:text="选择联系人"
         android:textSize="20dp"
         android:background="@drawable/radius_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <Button
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:text="上一页"
-        android:onClick="previousPage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Button
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:text="下一页"
-        android:onClick="nextPage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:text="上一页"
+            android:onClick="previousPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:text="下一页"
+            android:onClick="nextPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</LinearLayout>
