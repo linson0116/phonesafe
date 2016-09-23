@@ -3,7 +3,7 @@
     package="com.linson.phonesafe">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -33,7 +33,9 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.ContactsActivity"></activity>
+        <activity android:name=".activity.ContactsActivity" />
+        <activity android:name=".activity.Setup4Activity" />
+        <activity android:name=".activity.Setup5Activity"></activity>
     </application>
 
 </manifest>

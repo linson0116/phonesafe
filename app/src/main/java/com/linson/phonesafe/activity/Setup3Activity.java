@@ -2,19 +2,17 @@ package com.linson.phonesafe.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.linson.phonesafe.R;
-
-import static android.content.ContentValues.TAG;
+import com.linson.phonesafe.utils.SpUtils;
 
 public class Setup3Activity extends BaseSetupActivity {
 
     private TextView tv_radius;
-    private TextView tv_tel;
+    private EditText et_tel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +23,7 @@ public class Setup3Activity extends BaseSetupActivity {
     }
 
     private void initUI() {
-        tv_tel = (TextView) findViewById(R.id.tv_tel);
+        et_tel = (EditText) findViewById(R.id.et_tel);
         tv_radius.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,12 +42,18 @@ public class Setup3Activity extends BaseSetupActivity {
 
     @Override
     void showNextPage() {
-
+        SpUtils.setSafePhoneNumber(this,et_tel.getText().toString());
+        Intent intent = new Intent(this, Setup4Activity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        tv_tel.setText(data.getStringExtra("tel"));
+        if (data == null) {
+        } else {
+            et_tel.setText(data.getStringExtra("tel"));
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 }

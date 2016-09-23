@@ -51,6 +51,7 @@ public class ContactsActivity extends Activity {
             HashMap<String, String> hashMap = new HashMap<String,String>();
             while (cursor1.moveToNext()) {
                 String data = cursor1.getString(0);
+                data = data.replace(" ","").replace("-","");
                 String mimetype = cursor1.getString(1);
                 Log.i(TAG, "initData: " + data +" " + mimetype);
 

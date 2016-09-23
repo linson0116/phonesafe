@@ -25,4 +25,17 @@ public class SpUtils {
         String sim_number = preferences.getString(ConstantValues.SIM_NUMBER, "");
         return sim_number;
     }
+
+    public static String getSafePhoneNumber(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(ConstantValues.PSD_XML, Context.MODE_PRIVATE);
+        String safe_phone_number = preferences.getString(ConstantValues.SAFE_PHONE_NUMBER, "");
+        return safe_phone_number;
+    }
+
+    public static void setSafePhoneNumber(Context context,String safePhoneNumber) {
+        SharedPreferences preferences = context.getSharedPreferences(ConstantValues.PSD_XML, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.putString(ConstantValues.SAFE_PHONE_NUMBER, safePhoneNumber);
+        edit.commit();
+    }
 }
