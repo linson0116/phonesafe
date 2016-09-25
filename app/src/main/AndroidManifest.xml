@@ -35,7 +35,12 @@
 
         <activity android:name=".activity.ContactsActivity" />
         <activity android:name=".activity.Setup4Activity" />
-        <activity android:name=".activity.Setup5Activity"></activity>
+        <activity android:name=".activity.Setup5Activity" />
+
+        <service
+            android:name=".service.AlarmMusicService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
