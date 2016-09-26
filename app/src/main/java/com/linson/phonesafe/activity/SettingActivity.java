@@ -1,16 +1,26 @@
 package com.linson.phonesafe.activity;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.linson.phonesafe.R;
 import com.linson.phonesafe.service.AlarmMusicService;
 import com.linson.phonesafe.service.PhoneStatusService;
 import com.linson.phonesafe.view.SettingItemView;
 
+import static android.content.ContentValues.TAG;
+
 public class SettingActivity extends Activity {
+
+    private WindowManager mWM;
+    private View viewToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,5 +55,32 @@ public class SettingActivity extends Activity {
 
     public void endPhoneService(View view) {
         stopService(new Intent(getApplicationContext(), PhoneStatusService.class));
+    }
+
+    public void openToast(View view) {
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams();
+
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        params.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        params.format = PixelFormat.TRANSLUCENT;
+        params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        //在响铃的时候显示吐司,和电话类型一致
+        Log.i(TAG, "openToast: " + params.type);
+        //params.type = WindowManager.LayoutParams.TYPE_PHONE;
+
+        //指定吐司的所在位置(将吐司指定在左上角)
+        params.gravity = Gravity.LEFT+ Gravity.TOP;
+
+        mWM = (WindowManager) getSystemService(WINDOW_SERVICE);
+        viewToast = View.inflate(getApplicationContext(), R.layout.toast_phone, null);
+        mWM.addView(viewToast,params);
+
+
+
+    }
+
+    public void closeToast(View view) {
+        mWM.removeView(viewToast);
+
     }
 }
