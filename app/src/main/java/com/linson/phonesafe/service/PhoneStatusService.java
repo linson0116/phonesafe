@@ -20,6 +20,8 @@ public class PhoneStatusService extends Service {
 
     private TelephonyManager mTM;
     private MyPhoneStateListener myPhoneStateListener;
+    private WindowManager mWM;
+    private View viewToast;
 
     public PhoneStatusService() {
     }
@@ -52,6 +54,7 @@ public class PhoneStatusService extends Service {
 
                     params.height = WindowManager.LayoutParams.WRAP_CONTENT;
                     params.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                    params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
                     params.format = PixelFormat.TRANSLUCENT;
                     //在响铃的时候显示吐司,和电话类型一致
                     Log.i(TAG, "openToast: " + params.type);
@@ -60,8 +63,8 @@ public class PhoneStatusService extends Service {
                     //指定吐司的所在位置(将吐司指定在左上角)
                     params.gravity = Gravity.CENTER;
 
-                    WindowManager mWM = (WindowManager) getSystemService(WINDOW_SERVICE);
-                    View viewToast = View.inflate(getApplicationContext(), R.layout.toast_phone, null);
+                    mWM = (WindowManager) getSystemService(WINDOW_SERVICE);
+                    viewToast = View.inflate(getApplicationContext(), R.layout.toast_phone, null);
                     mWM.addView(viewToast,params);
                     break;
                 case TelephonyManager.CALL_STATE_OFFHOOK:
@@ -75,6 +78,7 @@ public class PhoneStatusService extends Service {
     public void onDestroy() {
         Log.i(TAG, "onDestroy: 服务已销毁");
         mTM.listen(myPhoneStateListener,PhoneStateListener.LISTEN_NONE);
+        mWM.removeView(viewToast);
         super.onDestroy();
     }
 }

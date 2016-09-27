@@ -37,11 +37,13 @@
         android:layout_height="wrap_content">
         <Button
             android:text="开启电话监听服务"
+            android:textSize="16sp"
             android:onClick="beginPhoneService"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <Button
             android:text = "结束电话监听服务"
+            android:textSize="16sp"
             android:onClick="endPhoneService"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -62,5 +64,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
+    <com.linson.phonesafe.view.ArrowItemView
+        android:id="@+id/aiv"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+    </com.linson.phonesafe.view.ArrowItemView>
 </LinearLayout>
