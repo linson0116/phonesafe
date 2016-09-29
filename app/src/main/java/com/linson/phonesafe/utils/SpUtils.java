@@ -14,12 +14,13 @@ public class SpUtils {
         return psd;
     }
 
-    public static void setPsd(Context context,String psd) {
+    public static void setPsd(Context context, String psd) {
         SharedPreferences preferences = context.getSharedPreferences(ConstantValues.PSD_XML, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = preferences.edit();
         edit.putString(ConstantValues.PSD, psd);
         edit.commit();
     }
+
     public static String getSIMNumber(Context context) {
         SharedPreferences preferences = context.getSharedPreferences(ConstantValues.PSD_XML, Context.MODE_PRIVATE);
         String sim_number = preferences.getString(ConstantValues.SIM_NUMBER, "");
@@ -32,10 +33,23 @@ public class SpUtils {
         return safe_phone_number;
     }
 
-    public static void setSafePhoneNumber(Context context,String safePhoneNumber) {
+    public static void setSafePhoneNumber(Context context, String safePhoneNumber) {
         SharedPreferences preferences = context.getSharedPreferences(ConstantValues.PSD_XML, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = preferences.edit();
         edit.putString(ConstantValues.SAFE_PHONE_NUMBER, safePhoneNumber);
         edit.commit();
     }
+
+    public static int getInt(Context ctx, String key) {
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(ConstantValues.PSD_XML, Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(key, 0);
+    }
+
+    public static void setInt(Context ctx, String key, int value) {
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(ConstantValues.PSD_XML, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putInt(key, value);
+        edit.commit();
+    }
+
 }

@@ -105,6 +105,10 @@ public class SettingActivity extends Activity {
 
     public void closeToast(View view) {
         mWM.removeView(viewToast);
+    }
 
+    public void setLocation(View view) {
+        Intent intent = new Intent(this,SetLocationActivity.class);
+        startActivity(intent);
     }
 }

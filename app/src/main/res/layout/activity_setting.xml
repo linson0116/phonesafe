@@ -75,6 +75,7 @@
         <Button
             android:text="设置位置"
             android:id="@+id/bt_set_location"
+            android:onClick="setLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

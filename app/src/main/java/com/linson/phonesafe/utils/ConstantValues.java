@@ -10,5 +10,7 @@ public class ConstantValues {
     public static final String TEL_NAME = "vnd.android.cursor.item/name";
     public static final String TEL = "vnd.android.cursor.item/phone_v2";
     public static final String SAFE_PHONE_NUMBER = "safe_phone_number";
+    public static final String LOCATION_X = "locationX";
+    public static final String LOCATION_Y = "locationY";
 }
 
