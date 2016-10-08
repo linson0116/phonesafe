@@ -1,10 +1,12 @@
 package com.linson.phonesafe.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -17,6 +19,9 @@ import static android.content.ContentValues.TAG;
 public class SetLocationActivity extends Activity {
 
     private ImageView iv_set_location;
+    private int mWindowWidth;
+    private int mWindowHeight;
+    private long[] mHits = new long[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +34,9 @@ public class SetLocationActivity extends Activity {
     private void initLocation() {
 //        SpUtils.setInt(this, ConstantValues.LOCATION_X, 100);
 //        SpUtils.setInt(this, ConstantValues.LOCATION_Y, 100);
-
+        WindowManager manager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        mWindowWidth = manager.getDefaultDisplay().getWidth();
+        mWindowHeight = manager.getDefaultDisplay().getHeight();
         int locationX = SpUtils.getInt(this, ConstantValues.LOCATION_X);
         int locationY = SpUtils.getInt(this, ConstantValues.LOCATION_Y);
         Log.i(TAG, "initLocation: " + locationX);
@@ -37,7 +44,9 @@ public class SetLocationActivity extends Activity {
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
         params.leftMargin = locationX;
+        Log.i(TAG, "initLocation: X" + locationX);
         params.topMargin = locationY;
+        Log.i(TAG, "initLocation: Y" + locationY);
         iv_set_location.setLayoutParams(params);
 //        iv_set_location.layout(200,200,400,400);
     }
@@ -67,6 +76,19 @@ public class SetLocationActivity extends Activity {
                         int top = iv_set_location.getTop() + disY;
                         int bottom = iv_set_location.getBottom() + disY;
                         int right = iv_set_location.getRight() + disX;
+
+                        if (left < 0) {
+                            return true;
+                        }
+                        if (right > mWindowWidth) {
+                            return true;
+                        }
+                        if (top < 0) {
+                            return true;
+                        }
+                        if (bottom > mWindowHeight - 25) {
+                            return true;
+                        }
                         iv_set_location.layout(left, top, right, bottom);
 
                         beginX = (int) event.getRawX();
@@ -74,12 +96,32 @@ public class SetLocationActivity extends Activity {
 
                         break;
                     case MotionEvent.ACTION_UP:
-                        SpUtils.setInt(getApplication(),ConstantValues.LOCATION_X,(int)event.getRawX());
-                        SpUtils.setInt(getApplication(),ConstantValues.LOCATION_Y, (int) event.getRawY());
-                        Log.i(TAG, "onTouch: " + event.getRawX());
+                        SpUtils.setInt(getApplication(), ConstantValues.LOCATION_X, iv_set_location.getLeft());
+                        SpUtils.setInt(getApplication(), ConstantValues.LOCATION_Y, iv_set_location.getTop());
+                        Log.i(TAG, "onTouch: " + iv_set_location.getLeft() + "-" + iv_set_location.getTop());
+//                        Log.i(TAG, "onTouch: x,y" + event.getX()+"--" + event.getY());
                         break;
                 }
-                return true;
+                return false;
+            }
+        });
+        iv_set_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.arraycopy(mHits,1,mHits,0,mHits.length-1);
+                mHits[mHits.length - 1] = System.currentTimeMillis();
+                if (mHits[mHits.length - 1] - mHits[0]<500) {
+                    Log.i(TAG, "onClick: 双击");
+                    int l =(mWindowWidth - iv_set_location.getWidth())/2;
+                    int t = (mWindowHeight - iv_set_location.getHeight())/2;
+                    int r = mWindowWidth/2 + iv_set_location.getWidth()/2;
+                    int b = mWindowHeight/2 + iv_set_location.getHeight()/2;
+                    iv_set_location.layout(l,t,r,b);
+                    SpUtils.setInt(getApplication(),ConstantValues.LOCATION_X,iv_set_location.getLeft());
+                    SpUtils.setInt(getApplication(),ConstantValues.LOCATION_Y,iv_set_location.getTop());
+
+                }
+
             }
         });
     }

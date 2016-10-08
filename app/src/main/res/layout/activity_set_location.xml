@@ -8,7 +8,7 @@
     tools:context="com.linson.phonesafe.activity.SetLocationActivity">
     <ImageView
         android:id="@+id/iv_set_location"
-        android:background="@drawable/lock"
+        android:background="@drawable/drag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </RelativeLayout>

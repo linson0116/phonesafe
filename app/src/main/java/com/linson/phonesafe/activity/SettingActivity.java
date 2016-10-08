@@ -10,8 +10,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.linson.phonesafe.R;
+import com.linson.phonesafe.service.RocketService;
 import com.linson.phonesafe.service.AlarmMusicService;
 import com.linson.phonesafe.service.PhoneStatusService;
 import com.linson.phonesafe.view.ArrowItemView;
@@ -66,6 +68,17 @@ public class SettingActivity extends Activity {
 
             }
         });
+        //火箭按钮初始化
+        Button btn_rocket = (Button) findViewById(R.id.btn_rocket);
+        btn_rocket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RocketService.class);
+                startService(intent);
+                finish();
+            }
+        });
+
     }
 
     public void play(View view) {
