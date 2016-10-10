@@ -13,9 +13,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.linson.phonesafe.R;
-import com.linson.phonesafe.service.RocketService;
 import com.linson.phonesafe.service.AlarmMusicService;
 import com.linson.phonesafe.service.PhoneStatusService;
+import com.linson.phonesafe.service.RocketService;
 import com.linson.phonesafe.view.ArrowItemView;
 import com.linson.phonesafe.view.SettingItemView;
 
@@ -99,7 +99,6 @@ public class SettingActivity extends Activity {
 
     public void openToast(View view) {
         WindowManager.LayoutParams params = new WindowManager.LayoutParams();
-
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
         params.width = WindowManager.LayoutParams.WRAP_CONTENT;
         params.format = PixelFormat.TRANSLUCENT;
@@ -107,10 +106,10 @@ public class SettingActivity extends Activity {
         //在响铃的时候显示吐司,和电话类型一致
         Log.i(TAG, "openToast: " + params.type);
         //params.type = WindowManager.LayoutParams.TYPE_PHONE;
-
         //指定吐司的所在位置(将吐司指定在左上角)
         params.gravity = Gravity.LEFT + Gravity.TOP;
-
+        params.x = 100;
+        params.y = 200;
         mWM = (WindowManager) getSystemService(WINDOW_SERVICE);
         viewToast = View.inflate(getApplicationContext(), R.layout.toast_phone, null);
         mWM.addView(viewToast, params);

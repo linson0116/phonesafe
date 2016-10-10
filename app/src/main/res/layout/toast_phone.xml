@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <TextView
-        android:text="测试"
-        android:textSize="20sp"
-        android:textColor="#f00"
-        android:background="#22334455"
+        android:id="@+id/tv_toast_phone"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="#22334455"
+        android:text="测试"
+        android:textColor="#f00"
+        android:textSize="20sp" />
 </LinearLayout>

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.linson.phonesafe.R;
 
@@ -40,6 +41,14 @@ public class PhoneStatusService extends Service {
         super.onCreate();
     }
 
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "onDestroy: 服务已销毁");
+        mTM.listen(myPhoneStateListener, PhoneStateListener.LISTEN_NONE);
+        mWM.removeView(viewToast);
+        super.onDestroy();
+    }
+
     class MyPhoneStateListener extends PhoneStateListener {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
@@ -60,11 +69,14 @@ public class PhoneStatusService extends Service {
                     Log.i(TAG, "openToast: " + params.type);
                     params.type = WindowManager.LayoutParams.TYPE_PHONE;
 
-                    //指定吐司的所在位置(将吐司指定在左上角)
+                    //指定吐司的所在位置
                     params.gravity = Gravity.CENTER;
 
                     mWM = (WindowManager) getSystemService(WINDOW_SERVICE);
                     viewToast = View.inflate(getApplicationContext(), R.layout.toast_phone, null);
+
+                    TextView tv_toast_phone = (TextView) viewToast.findViewById(R.id.tv_toast_phone);
+                    tv_toast_phone.setText(incomingNumber);
                     mWM.addView(viewToast,params);
                     break;
                 case TelephonyManager.CALL_STATE_OFFHOOK:
@@ -73,12 +85,5 @@ public class PhoneStatusService extends Service {
             }
             super.onCallStateChanged(state, incomingNumber);
         }
-    }
-    @Override
-    public void onDestroy() {
-        Log.i(TAG, "onDestroy: 服务已销毁");
-        mTM.listen(myPhoneStateListener,PhoneStateListener.LISTEN_NONE);
-        mWM.removeView(viewToast);
-        super.onDestroy();
     }
 }
