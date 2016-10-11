@@ -67,7 +67,12 @@
         <activity
             android:name=".activity.RocketBackground"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".activity.BlackNameActivity"></activity>
+        <activity android:name=".activity.BlackNameActivity" />
+
+        <service
+            android:name=".service.BlackNameService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

@@ -14,6 +14,7 @@ import android.widget.Button;
 
 import com.linson.phonesafe.R;
 import com.linson.phonesafe.service.AlarmMusicService;
+import com.linson.phonesafe.service.BlackNameService;
 import com.linson.phonesafe.service.PhoneStatusService;
 import com.linson.phonesafe.service.RocketService;
 import com.linson.phonesafe.view.ArrowItemView;
@@ -26,6 +27,9 @@ public class SettingActivity extends Activity {
     private WindowManager mWM;
     private View viewToast;
     private ArrowItemView aiv;
+    private Button btn_start_blacknames;
+    private Button btn_end_blacknames;
+    private Intent intent_blackname_service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,22 @@ public class SettingActivity extends Activity {
                 Intent intent = new Intent(getApplicationContext(), RocketService.class);
                 startService(intent);
                 finish();
+            }
+        });
+
+        btn_start_blacknames = (Button) findViewById(R.id.btn_start_blacknames);
+        btn_end_blacknames = (Button) findViewById(R.id.btn_end_blacknames);
+        btn_start_blacknames.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent_blackname_service = new Intent(getApplicationContext(), BlackNameService.class);
+                startService(intent_blackname_service);
+            }
+        });
+        btn_end_blacknames.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopService(intent_blackname_service);
             }
         });
 

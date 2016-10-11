@@ -8,6 +8,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,13 +35,18 @@ public class BlackNameActivity extends Activity {
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            mAdapter = new BlackNumberAdapter();
-            lv_blacknames.setAdapter(mAdapter);
+            if (mAdapter == null) {
+                mAdapter = new BlackNumberAdapter();
+                lv_blacknames.setAdapter(mAdapter);
+            } else {
+                mAdapter.notifyDataSetChanged();
+            }
             super.handleMessage(msg);
         }
     };
     private int mode;
     private EditText et_tel;
+    private boolean mIsLoad = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +61,7 @@ public class BlackNameActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mArrayList = mDao.findAll();
+                mArrayList = mDao.find(10);
                 mHandler.sendEmptyMessage(0);
             }
         }).start();
@@ -68,6 +74,27 @@ public class BlackNameActivity extends Activity {
             @Override
             public void onClick(View v) {
                 showDialog();
+            }
+        });
+        lv_blacknames.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (mArrayList != null) {
+                    if (scrollState == SCROLL_STATE_IDLE
+                            && lv_blacknames.getLastVisiblePosition() == mArrayList.size() - 1
+                            && !mIsLoad) {
+                        BlackNumberDao dao = BlackNumberDao.getInstance(getApplicationContext());
+                        ArrayList<BlackNumberInfo> moreData = dao.find(mArrayList.size());
+                        mArrayList.addAll(moreData);
+                        mHandler.sendEmptyMessage(0);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
             }
         });
     }
@@ -128,6 +155,8 @@ public class BlackNameActivity extends Activity {
 
     class BlackNumberAdapter extends BaseAdapter {
 
+        private ViewHolder viewHolder;
+
         @Override
         public int getCount() {
             return mArrayList.size();
@@ -145,9 +174,20 @@ public class BlackNameActivity extends Activity {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            View view = View.inflate(getApplicationContext(), R.layout.black_name_item, null);
-            final TextView tv_phone = (TextView) view.findViewById(R.id.tv_phone);
-            final TextView tv_mode = (TextView) view.findViewById(R.id.tv_mode);
+            if (convertView == null) {
+                convertView = View.inflate(getApplicationContext(), R.layout.black_name_item, null);
+                ViewHolder viewHolder = new ViewHolder();
+                viewHolder.tv_phone = (TextView) convertView.findViewById(R.id.tv_phone);
+                viewHolder.tv_mode = (TextView) convertView.findViewById(R.id.tv_mode);
+                viewHolder.btn_delete = (Button) convertView.findViewById(R.id.btn_delete);
+                convertView.setTag(viewHolder);
+            }
+//            View view = View.inflate(getApplicationContext(), R.layout.black_name_item, null);
+            if (convertView != null) {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+            final TextView tv_phone = viewHolder.tv_phone;
+            final TextView tv_mode = viewHolder.tv_mode;
             tv_phone.setText(mArrayList.get(position).phone);
             String mode = mArrayList.get(position).mode;
             switch (mode) {
@@ -161,7 +201,7 @@ public class BlackNameActivity extends Activity {
                     tv_mode.setText("全部拦截");
                     break;
             }
-            Button btn_delete = (Button) view.findViewById(R.id.btn_delete);
+            Button btn_delete = viewHolder.btn_delete;
             btn_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -178,7 +218,13 @@ public class BlackNameActivity extends Activity {
                 }
             });
 
-            return view;
+            return convertView;
         }
+    }
+
+    class ViewHolder {
+        TextView tv_phone;
+        TextView tv_mode;
+        Button btn_delete;
     }
 }

@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static android.content.ContentValues.TAG;
 import static org.junit.Assert.assertEquals;
@@ -30,9 +31,13 @@ public class ExampleInstrumentedTest {
 
         assertEquals("com.linson.phonesafe", appContext.getPackageName());
         BlackNumberDao instance = BlackNumberDao.getInstance(appContext);
-        //instance.insert("1102",1+"");
+        for (int i = 0; i < 100; i++) {
+            instance.insert("1890000" + i, new Random().nextInt(3) + 1 + "");
+        }
+
+//        instance.insert("1102",1+"");
 //        instance.delete("1102");
-        instance.update("1101", "2");
+//        instance.update("1101", "2");
         ArrayList<BlackNumberInfo> arr = instance.findAll();
         Log.i(TAG, "useAppContext: " + arr);
     }

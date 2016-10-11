@@ -20,6 +20,7 @@ public class BlackNumberDao {
     private BlackNumberOpenHelper helper;
     private String table = "blacknumber";
 
+
     private BlackNumberDao(Context context) {
         helper = new BlackNumberOpenHelper(context);
     }
@@ -69,5 +70,50 @@ public class BlackNumberDao {
         cursor.close();
         db.close();
         return arrayList;
+    }
+
+    public ArrayList<BlackNumberInfo> find(int index) {
+        ArrayList<BlackNumberInfo> arrayList = new ArrayList<BlackNumberInfo>();
+        String sql = "select * from " + table + " order by _id desc limit ? ,10";
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, new String[]{index + ""});
+        while (cursor.moveToNext()) {
+            String phone = cursor.getString(cursor.getColumnIndex("phone"));
+            String mode = cursor.getString(cursor.getColumnIndex("mode"));
+            BlackNumberInfo info = new BlackNumberInfo();
+            info.phone = phone;
+            info.mode = mode;
+            arrayList.add(info);
+        }
+        cursor.close();
+        db.close();
+        return arrayList;
+    }
+
+    public int getCount() {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String sql = "select count(*) from " + table;
+        Cursor cursor = db.rawQuery(sql, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
+    }
+
+    public BlackNumberInfo findByPhone(String originatingAddress) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String sql = "select * from " + table + " where phone = ?";
+        Cursor cursor = db.rawQuery(sql, new String[]{originatingAddress});
+        BlackNumberInfo info = null;
+        if (cursor.moveToNext()) {
+            String phone = cursor.getString(cursor.getColumnIndex("phone"));
+            String mode = cursor.getString(cursor.getColumnIndex("mode"));
+            info = new BlackNumberInfo();
+            info.phone = phone;
+            info.mode = mode;
+        }
+        cursor.close();
+        db.close();
+        return info;
     }
 }
