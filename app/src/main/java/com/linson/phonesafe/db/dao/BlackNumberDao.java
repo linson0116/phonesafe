@@ -4,11 +4,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.linson.phonesafe.db.BlackNumberOpenHelper;
 import com.linson.phonesafe.db.domain.BlackNumberInfo;
 
 import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Administrator on 2016/10/10.
@@ -75,6 +78,7 @@ public class BlackNumberDao {
     public ArrayList<BlackNumberInfo> find(int index) {
         ArrayList<BlackNumberInfo> arrayList = new ArrayList<BlackNumberInfo>();
         String sql = "select * from " + table + " order by _id desc limit ? ,10";
+        Log.i(TAG, "find: " + sql);
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, new String[]{index + ""});
         while (cursor.moveToNext()) {
@@ -87,6 +91,7 @@ public class BlackNumberDao {
         }
         cursor.close();
         db.close();
+        Log.i(TAG, "find: " + arrayList.size());
         return arrayList;
     }
 

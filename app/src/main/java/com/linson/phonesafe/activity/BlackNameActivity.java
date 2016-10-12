@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -22,6 +23,8 @@ import com.linson.phonesafe.db.dao.BlackNumberDao;
 import com.linson.phonesafe.db.domain.BlackNumberInfo;
 
 import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 public class BlackNameActivity extends Activity {
 
@@ -41,6 +44,7 @@ public class BlackNameActivity extends Activity {
             } else {
                 mAdapter.notifyDataSetChanged();
             }
+
             super.handleMessage(msg);
         }
     };
@@ -61,7 +65,8 @@ public class BlackNameActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mArrayList = mDao.find(10);
+                mArrayList = mDao.find(0);
+                Log.i(TAG, "run: " + mArrayList.size());
                 mHandler.sendEmptyMessage(0);
             }
         }).start();
