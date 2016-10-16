@@ -30,6 +30,7 @@ public class SettingActivity extends Activity {
     private Button btn_start_blacknames;
     private Button btn_end_blacknames;
     private Intent intent_blackname_service;
+    private Button btn_del_phonerecord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +99,10 @@ public class SettingActivity extends Activity {
                 stopService(intent_blackname_service);
             }
         });
+        btn_del_phonerecord = (Button) findViewById(R.id.btn_del_phonerecord);
 
     }
+
 
     public void play(View view) {
 //        MediaPlayer player = MediaPlayer.create(this, R.raw.ylzs);

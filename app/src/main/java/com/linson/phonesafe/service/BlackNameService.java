@@ -5,8 +5,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.ContentObserver;
+import android.net.Uri;
+import android.os.Handler;
 import android.os.IBinder;
-import android.os.RemoteException;
 import android.telephony.PhoneStateListener;
 import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
@@ -16,17 +18,17 @@ import com.android.internal.telephony.ITelephony;
 import com.linson.phonesafe.db.dao.BlackNumberDao;
 import com.linson.phonesafe.db.domain.BlackNumberInfo;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static android.content.ContentValues.TAG;
 
 public class BlackNameService extends Service {
 
-    private BlackNameReceiver receiver;
+    private BlackNameReceiver mReceiver;
     private BlackNumberDao mDao;
     private TelephonyManager mTm;
-    private PhoneStateListener phoneStateListener;
+    private PhoneStateListener mPhoneStateListener;
+    private PhoneRecordContentObserver mObserver;
 
     public BlackNameService() {
     }
@@ -36,23 +38,30 @@ public class BlackNameService extends Service {
         Log.i(TAG, "onCreate: 黑名单服务已开启");
         mDao = BlackNumberDao.getInstance(this);
         //拦截短信
-        receiver = new BlackNameReceiver();
+        mReceiver = new BlackNameReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.provider.Telephony.SMS_RECEIVED");
         filter.setPriority(1000);
-        registerReceiver(receiver, filter);
+        registerReceiver(mReceiver, filter);
         //拦截电话
         mTm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        phoneStateListener = new BlackNamePhoneStateListener();
-        mTm.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+        mPhoneStateListener = new BlackNamePhoneStateListener();
+        mTm.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
         super.onCreate();
     }
 
     @Override
     public void onDestroy() {
         Log.i(TAG, "onDestroy: 黑名单服务已关闭");
-        unregisterReceiver(receiver);
-        mTm.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
+        if (mReceiver != null) {
+            unregisterReceiver(mReceiver);
+        }
+        if (mTm != null && mPhoneStateListener != null) {
+            mTm.listen(mPhoneStateListener, PhoneStateListener.LISTEN_NONE);
+        }
+        if (mObserver != null) {
+            getContentResolver().unregisterContentObserver(mObserver);
+        }
         super.onDestroy();
     }
 
@@ -66,28 +75,44 @@ public class BlackNameService extends Service {
         return null;
     }
 
-    private void endCall() {
+    private void endCall(String incomingNumber) {
         //ITelephony.Stub.asInterface(ServiceManager.getService(Context.TELEPHONY_SERVICE));
         Log.i(TAG, "endCall: ");
         try {
-            Class clazz = Class.forName("android.os.ServiceManager");
+            //1,获取ServiceManager字节码文件
+            Class<?> clazz = Class.forName("android.os.ServiceManager");
+            //2,获取方法
             Method method = clazz.getMethod("getService", String.class);
-            IBinder iBinder = (IBinder) method.invoke(null, Context.TELECOM_SERVICE);
+            //3,反射调用此方法
+            IBinder iBinder = (IBinder) method.invoke(null, Context.TELEPHONY_SERVICE);
+            //4,调用获取aidl文件对象方法
             ITelephony iTelephony = ITelephony.Stub.asInterface(iBinder);
+            //5,调用在aidl中隐藏的endCall方法
             iTelephony.endCall();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        //监听通话记录改变
+        mObserver = new PhoneRecordContentObserver(new Handler(), incomingNumber);
+        getContentResolver().registerContentObserver(Uri.parse("content://call_log/calls"), true, mObserver);
+
     }
 
+    class PhoneRecordContentObserver extends ContentObserver {
+        String number = "";
+
+        public PhoneRecordContentObserver(Handler handler, String incomingNumber) {
+            super(handler);
+            number = incomingNumber;
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            //删除通话记录
+            getContentResolver().delete(Uri.parse("content://call_log/calls"), "number = ?", new String[]{number});
+            super.onChange(selfChange);
+        }
+    }
     class BlackNameReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -117,11 +142,13 @@ public class BlackNameService extends Service {
                 case TelephonyManager.CALL_STATE_RINGING:
                     Log.i(TAG, "onCallStateChanged: " + incomingNumber);
                     BlackNumberInfo info = mDao.findByPhone(incomingNumber);
-                    String mode = info.mode;
-                    if (mode.equals("2") || mode.equals("3")) {
-                        //挂断电话
-                        Log.i(TAG, "onCallStateChanged: mode=" + mode);
-                        endCall();
+                    if (info != null) {
+                        String mode = info.mode;
+                        if (mode.equals("2") || mode.equals("3")) {
+                            //挂断电话
+                            Log.i(TAG, "onCallStateChanged: mode=" + mode);
+                            endCall(incomingNumber);
+                        }
                     }
                     break;
             }
