@@ -34,7 +34,7 @@ public class HomeActivity extends Activity {
     }
 
     private void initData() {
-        functionNames = new String[]{"手机安全", "黑名单", "3", "4", "5", "6", "7", "8", "设置"};
+        functionNames = new String[]{"手机安全", "黑名单", "软件管理", "4", "5", "6", "7", "高级工具", "设置"};
         functionImages = new int[]{R.drawable.widget01,
                 R.drawable.widget02,
                 R.drawable.widget03,
@@ -84,6 +84,14 @@ public class HomeActivity extends Activity {
                         break;
                     case 0:
                         checkPsd();
+                        break;
+                    case 7:
+                        //高级工具
+                        startActivity(new Intent(getApplicationContext(), AToolsActivity.class));
+                        break;
+                    case 2:
+                        //软件管理
+                        startActivity(new Intent(getApplicationContext(), SoftManagerActivity.class));
                         break;
                     case 1:
                         openBlackName();
