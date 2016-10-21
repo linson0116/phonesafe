@@ -22,12 +22,19 @@
         <TextView
             android:id="@+id/tv_disk"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="磁盘" />
 
         <TextView
             android:id="@+id/tv_sdcard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:text="SD卡" />
     </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv_appinfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
 </LinearLayout>
