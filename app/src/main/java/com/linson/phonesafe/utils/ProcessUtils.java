@@ -19,4 +19,18 @@ public class ProcessUtils {
         }
         return 0;
     }
+
+    public static long getProcessAvailMem(Context ctx) {
+        ActivityManager am = (ActivityManager) ctx.getSystemService(ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+        am.getMemoryInfo(memoryInfo);
+        return memoryInfo.availMem;
+    }
+
+    public static long getProcessTotal(Context ctx) {
+        ActivityManager am = (ActivityManager) ctx.getSystemService(ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+        am.getMemoryInfo(memoryInfo);
+        return memoryInfo.totalMem;
+    }
 }

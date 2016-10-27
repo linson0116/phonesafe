@@ -16,7 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.linson.phonesafe.MainActivity;
 import com.linson.phonesafe.R;
+import com.linson.phonesafe.utils.ConstantValues;
 import com.linson.phonesafe.utils.SpUtils;
 import com.linson.phonesafe.utils.ToolsUtils;
 
@@ -31,6 +33,20 @@ public class HomeActivity extends Activity {
         setContentView(R.layout.activity_home);
         initUI();
         initData();
+        initShortCut();
+    }
+
+    private void initShortCut() {
+        boolean flag = SpUtils.getBoolean(this, ConstantValues.SHORTCUT_INIT);
+        if (!flag) {
+            Intent intentApp = new Intent(this, MainActivity.class);
+            Intent intentBroadCast = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+            intentBroadCast.putExtra(Intent.EXTRA_SHORTCUT_NAME, "手机卫士");
+            intentBroadCast.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, R.mipmap.ic_launcher);
+            intentBroadCast.putExtra(Intent.EXTRA_SHORTCUT_INTENT, intentApp);
+            sendBroadcast(intentBroadCast);
+            SpUtils.setBoolean(this, ConstantValues.SHORTCUT_INIT, true);
+        }
     }
 
     private void initData() {

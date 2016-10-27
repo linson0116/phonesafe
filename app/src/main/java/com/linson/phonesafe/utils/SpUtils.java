@@ -52,4 +52,16 @@ public class SpUtils {
         edit.commit();
     }
 
+    public static void setBoolean(Context ctx, String key, boolean value) {
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(ConstantValues.PSD_XML, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putBoolean(key, value);
+        edit.commit();
+    }
+
+    public static boolean getBoolean(Context context, String key) {
+        SharedPreferences preferences = context.getSharedPreferences(ConstantValues.PSD_XML, Context.MODE_PRIVATE);
+        boolean value = preferences.getBoolean(key, false);
+        return value;
+    }
 }

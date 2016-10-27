@@ -12,5 +12,6 @@ public class ConstantValues {
     public static final String SAFE_PHONE_NUMBER = "safe_phone_number";
     public static final String LOCATION_X = "locationX";
     public static final String LOCATION_Y = "locationY";
+    public static final String SHORTCUT_INIT = "shortcut_init";
 }
 

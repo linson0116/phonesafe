@@ -3,19 +3,15 @@ package com.linson.phonesafe;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.text.format.Formatter;
 import android.util.Log;
 
-import com.linson.phonesafe.db.dao.BlackNumberDao;
-import com.linson.phonesafe.db.domain.BlackNumberInfo;
+import com.linson.phonesafe.utils.ProcessUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import static android.content.ContentValues.TAG;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Instrumentation test, which will execute on an Android device.
@@ -29,16 +25,15 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.linson.phonesafe", appContext.getPackageName());
-        BlackNumberDao instance = BlackNumberDao.getInstance(appContext);
-        for (int i = 0; i < 100; i++) {
-            instance.insert("1890000" + i, new Random().nextInt(3) + 1 + "");
-        }
+        long avail = ProcessUtils.getProcessAvailMem(appContext);
+        String strAvail = Formatter.formatFileSize(appContext, avail);
 
-//        instance.insert("1102",1+"");
-//        instance.delete("1102");
-//        instance.update("1101", "2");
-        ArrayList<BlackNumberInfo> arr = instance.findAll();
-        Log.i(TAG, "useAppContext: " + arr);
+        long total = ProcessUtils.getProcessTotal(appContext);
+        String strTotal = Formatter.formatFileSize(appContext, total);
+        Log.i(TAG, "useAppContext: " + strAvail + "--" + strTotal);
+        long used = total - avail;
+        String strUsed = Formatter.formatFileSize(appContext, used);
+        Log.i(TAG, "useAppContext: used=" + strUsed);
     }
+
 }
