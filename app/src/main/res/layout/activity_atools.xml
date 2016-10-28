@@ -24,6 +24,16 @@
         android:text="短信备份"
         android:textSize="20sp" />
 
+    <TextView
+        android:id="@+id/tv_number_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#22445566"
+        android:drawableLeft="@drawable/lock"
+        android:gravity="center"
+        android:text="常用号码查询"
+        android:textSize="20sp" />
+
     <ProgressBar
         android:id="@+id/pb_bar"
         style="@android:style/Widget.ProgressBar.Horizontal"
