@@ -1,5 +1,12 @@
 package com.linson.phonesafe.utils;
 
+import android.content.Context;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -29,4 +36,20 @@ public class ToolsUtils {
         return null;
     }
 
+    public static void asset2app(Context ctx, String fileName) {
+        try {
+            InputStream is = ctx.getAssets().open(fileName);
+            File file = new File(ctx.getFilesDir(), fileName);
+            OutputStream os = new FileOutputStream(file);
+            int len = 0;
+            byte[] buff = new byte[1024];
+            while ((len = is.read(buff)) != -1) {
+                os.write(buff, 0, len);
+            }
+            os.close();
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

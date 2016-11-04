@@ -50,7 +50,7 @@ public class HomeActivity extends Activity {
     }
 
     private void initData() {
-        functionNames = new String[]{"手机安全", "黑名单", "软件管理", "进程管理", "5", "6", "7", "高级工具", "设置"};
+        functionNames = new String[]{"手机安全", "黑名单", "软件管理", "进程管理", "5", "手机杀毒", "7", "高级工具", "设置"};
         functionImages = new int[]{R.drawable.widget01,
                 R.drawable.widget02,
                 R.drawable.widget03,
@@ -104,6 +104,10 @@ public class HomeActivity extends Activity {
                     case 3:
                         //进程管理
                         startActivity(new Intent(getApplicationContext(), ProcessManagerActivity.class));
+                        break;
+                    case 5:
+                        //手机杀毒
+                        startActivity(new Intent(getApplicationContext(), KillVirusActivity.class));
                         break;
                     case 7:
                         //高级工具
